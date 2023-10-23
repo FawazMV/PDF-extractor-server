@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+lib/
+vendor/
+
+# Optional npm cache directory
+.npm
+
+.env
+# Optional eslint cache
+.eslintcache
+
+# Optional Prettier cache
+.prettier-cache
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
