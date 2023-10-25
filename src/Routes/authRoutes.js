@@ -1,11 +1,11 @@
-import { Router } from 'express'
-import * as controller from '../Controllers/authController.js'
-const router = Router()
+import { Router } from "express";
+import * as controller from "../Controllers/authController.js";
+const router = Router();
 
-router.post('/login', controller.loginController)
+router.post("/login", controller.loginController);
 
-router.post('/register', controller.signupController)
+router.post("/register", controller.signupController);
 
-router.delete('/remove-account', controller.deleteAccountController)
+router.delete("/remove-account", authVerify, controller.deleteAccountController);
 
-export default router
+export default router;
