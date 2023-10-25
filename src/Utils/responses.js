@@ -1,6 +1,6 @@
 // Function to send a response for missing input data
 export const missingResponse = res => {
-  res.status(400).json({ message: 'Missing email or password' })
+  res.status(400).json({ message: 'Some values are missing' })
 }
 
 // Function to send a success response with optional data

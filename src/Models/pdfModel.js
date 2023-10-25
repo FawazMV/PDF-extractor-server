@@ -10,22 +10,8 @@ const pdfSchema = new mongoose.Schema(
     },
     pdf: [
       {
-        originalPDF: {
-          name: {
-            type: String,
-            required: true
-          },
-          path: {
-            type: String,
-            required: true
-          }
-        },
-        modifiedPDFs: [
-          {
-            name: String,
-            path: String
-          }
-        ]
+        name: String,
+        path: String
       }
     ]
   },

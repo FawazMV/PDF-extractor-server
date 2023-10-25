@@ -1,10 +1,12 @@
-import { Router } from 'express'
+import { Router } from "express";
+import upload from "../Middlewares/multer.js";
+import * as controller from "../Controllers/pdfController.js";
+import authVerify from "../Middlewares/authMiddlewear.js";
 
-const router = Router()
+const router = Router();
 
-router.get('/', (req, res) => {
-  console.log('first')
-  res.send('<h1> hello </h1>')
-})
+router.post("/extract-pdf", upload.single("pdfFile"), controller.extractController);
 
-export default router
+router.get("/saved-pdfs", authVerify, controller.getSavedPdfController);
+
+export default router;
