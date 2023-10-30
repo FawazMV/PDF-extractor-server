@@ -65,7 +65,7 @@ export const signupController = async (req, res, next) => {
 // Controller for deleting a user account
 export const deleteAccountController = async (req, res, next) => {
   try {
-    const userId = req.user._id; // Get the user's ID from the request
+    const userId = req.user; // Get the user's ID from the request
 
     // Use Promise.all to perform parallel operations
     const [deletedUser, deletedPDFs] = await Promise.all([

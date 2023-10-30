@@ -35,7 +35,7 @@ app.get("/", (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
   // Log the error
-  console.error(err);
+  console.error(err.message);
 
   // Send an error response with a standardized format
   res.status(500).json({
