@@ -4,6 +4,8 @@ import { deleteFile, pdfNameGenerator } from "../Utils/helper.js";
 import { authCheck } from "../Middlewares/authMiddlewear.js";
 import PDFModel from "../Models/pdfModel.js";
 import * as response from "../Utils/responses.js";
+import mongoose from "mongoose";
+import UserModel from "../Models/userModel.js";
 
 // Controller for uploading a PDF and creating a new one
 export const extractController = async (req, res, next) => {
@@ -57,13 +59,17 @@ export const extractController = async (req, res, next) => {
       if (!user) {
         const newOne = new PDFModel({
           user: authenticated,
-          pdf: [{ name, path: newPdfPath }],
+          pdf: [{ name, path: process.env.SERVER_URL + "uploads/" + newPdfPath }],
         });
         await newOne.save();
       } else {
         await PDFModel.updateOne(
           { user: authenticated },
-          { $push: { pdf: { name, path: newPdfPath } } }
+          {
+            $push: {
+              pdf: { name, path: process.env.SERVER_URL + "uploads/" + newPdfPath },
+            },
+          }
         );
       }
     } else {
@@ -73,7 +79,7 @@ export const extractController = async (req, res, next) => {
 
     //sending success response with url to the new pdf
     response.successResponse(res, {
-      newPath: process.env.SERVER_URL + newPdfPath,
+      newPath: process.env.SERVER_URL + "uploads/" + newPdfPath,
     });
   } catch (error) {
     error.errorMessage = "Failed to create a new PDF";
@@ -84,9 +90,16 @@ export const extractController = async (req, res, next) => {
 // Controller for getting all saved PDFs of user
 export const getSavedPdfController = async (req, res, next) => {
   try {
-    const user = await PDFModel.findOne({ user: req.user });
-    if (!user) return response.errResponse(res, 404, "user not found");
-    response.successResponse(res, { pdfs: user.pdf });
+    const [pdfs, user] = await Promise.all([
+      PDFModel.findOne({ user: req.user }),
+      UserModel.findById(req.user),
+    ]);
+
+    if (!user) {
+      return response.errResponse(res, 404, "User not found");
+    }
+
+    response.successResponse(res, { pdfs: pdfs?.pdf || [] });
   } catch (error) {
     next(error);
   }

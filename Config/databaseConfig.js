@@ -1,31 +1,34 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-mongoose.set('strictQuery', false)
+mongoose.set("strictQuery", false);
 
 const connectDb = async () => {
   try {
-    await mongoose.connect(process.env.DATABASE_URL, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true
-    })
-    console.log('Connected to the database')
+    await mongoose.connect(
+      process.env.DATABASE_URL || "mongodb://localhost:27017/pdf-extractor",
+      {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      }
+    );
+    console.log("Connected to the database");
   } catch (err) {
-    console.error('Database connection error:', err.message)
+    console.error("Database connection error:", err.message);
   }
 
   // Handle connection events (optional)
-  const db = mongoose.connection
-  db.on('error', err => console.error('MongoDB connection error:', err))
-  db.once('open', () => console.log('MongoDB connected.'))
-  db.on('disconnected', () => console.log('MongoDB disconnected.'))
+  const db = mongoose.connection;
+  db.on("error", (err) => console.error("MongoDB connection error:", err));
+  db.once("open", () => console.log("MongoDB connected."));
+  db.on("disconnected", () => console.log("MongoDB disconnected."));
 
   // Handle graceful shutdown (e.g., when your application exits)
-  process.on('SIGINT', () => {
+  process.on("SIGINT", () => {
     db.close(() => {
-      console.log('MongoDB connection closed.')
-      process.exit(0)
-    })
-  })
-}
+      console.log("MongoDB connection closed.");
+      process.exit(0);
+    });
+  });
+};
 
-export default connectDb
+export default connectDb;

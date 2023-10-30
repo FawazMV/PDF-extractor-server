@@ -15,7 +15,7 @@ export const comparePassword = async (plainPassword, hashedPassword) => {
 // Generate a JWT for a user that expires in 7 days
 export const generateAuthToken = (user) => {
   const secretKey = process.env.JWT_SECRET_KEY;
-  const payload = { email: user.email };
+  const payload = { email: user.email, _id: user._id };
 
   const expiration = "7d";
 
