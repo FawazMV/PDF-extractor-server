@@ -28,10 +28,10 @@ export const generateAuthToken = (user) => {
 // Function to generate a unique name for a PDF
 export const pdfNameGenerator = (filename) => {
   const timestamp = Date.now(); // Get the current timestamp
-  const filenameHex = Buffer.from(filename, "utf-8").toString("hex"); // Convert the filename to hexadecimal
-  return `${filenameHex + timestamp}`;
+  const truncatedFilename = filename.substring(0, 5); // Truncate the filename to a certain length
+  const filenameHex = Buffer.from(truncatedFilename, "utf-8").toString("hex"); // Convert the truncated filename to hexadecimal
+  return `${filenameHex}${timestamp}`;
 };
-
 // Function to delete a file after a specified time
 export const deleteFile = (pdfPath) => {
   setTimeout(async () => {
