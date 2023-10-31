@@ -65,7 +65,7 @@ export const extractController = async (req, res, next) => {
       if (!user) {
         const newOne = new PDFModel({
           user: authenticated,
-          pdf: [{ name, path: process.env.SERVER_URL + "uploads/" + newPdfPath }],
+          pdf: [{ name, path: process.env.SERVER_URL + "/uploads/" + newPdfPath }],
         });
         await newOne.save();
       } else {
@@ -73,7 +73,7 @@ export const extractController = async (req, res, next) => {
           { user: authenticated },
           {
             $push: {
-              pdf: { name, path: process.env.SERVER_URL + "uploads/" + newPdfPath },
+              pdf: { name, path: process.env.SERVER_URL + "/uploads/" + newPdfPath },
             },
           }
         );
@@ -85,7 +85,7 @@ export const extractController = async (req, res, next) => {
 
     //sending success response with url to the new pdf
     response.successResponse(res, {
-      newPath: process.env.SERVER_URL + "uploads/" + newPdfPath,
+      newPath: process.env.SERVER_URL + "/uploads/" + newPdfPath,
     });
   } catch (error) {
     error.errorMessage = "Failed to create a new PDF";
