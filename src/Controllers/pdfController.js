@@ -4,8 +4,8 @@ import { deleteFile, pdfNameGenerator } from "../Utils/helper.js";
 import { authCheck } from "../Middlewares/authMiddlewear.js";
 import PDFModel from "../Models/pdfModel.js";
 import * as response from "../Utils/responses.js";
-import mongoose from "mongoose";
 import UserModel from "../Models/userModel.js";
+import path from "path";
 
 // Controller for uploading a PDF and creating a new one
 export const extractController = async (req, res, next) => {
@@ -46,8 +46,14 @@ export const extractController = async (req, res, next) => {
 
     //setting new name for the pdf
     const name = pdfNameGenerator(req.file.originalname);
-    const newPdfPath = `newPDF/${name}.pdf`;
 
+    const newPdfPath = `newPDF/${name}.pdf`;
+    const directoryPath = path.join("public/uploads", path.dirname(newPdfPath));
+
+    // Check if the directory exists, and if not, create it
+    await fs.mkdir(directoryPath, { recursive: true });
+
+    // Save the PDF to the specified path
     await fs.writeFile("public/uploads/" + newPdfPath, newPdfBytes);
 
     //checking the user is logged in or not
